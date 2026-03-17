@@ -1,7 +1,7 @@
 name: Build NuvioTV Debug APK
 
 on:
-  workflow_dispatch:  # Permite executar manualmente
+  workflow_dispatch:
   push:
     branches: [ main, master, develop ]
   pull_request:
@@ -29,7 +29,7 @@ jobs:
         with:
           cache-read-only: false
 
-      - name: 📝 Criar local.properties (vazio, só para não faltar)
+      - name: 📝 Criar local.properties
         run: |
           touch local.properties
           echo "# Arquivo gerado automaticamente para CI" > local.properties
@@ -43,6 +43,13 @@ jobs:
           echo "TMDB_API_KEY=\"\"" >> local.properties
           echo "SUPABASE_URL=\"\"" >> local.properties
           echo "SUPABASE_ANON_KEY=\"\"" >> local.properties
+
+      - name: 🔑 Criar keystore fictícia para debug
+        run: |
+          keytool -genkey -v -keystore nuviotv.jks -alias nuviotv -keyalg RSA -keysize 2048 -validity 10000 \
+            -storepass 815787 -keypass 815787 \
+            -dname "CN=Debug, OU=Debug, O=Debug, L=Debug, ST=Debug, C=Debug"
+          echo "✅ Keystore criada com sucesso!"
 
       - name: 🏗️ Compilar APK Debug
         run: |
