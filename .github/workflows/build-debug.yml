@@ -29,7 +29,7 @@ jobs:
         with:
           cache-read-only: false
 
-      - name: 📝 Criar local.properties com valores dummy (sem aspas extras)
+      - name: 📝 Criar local.properties com valores dummy
         run: |
           touch local.properties
           echo "# Arquivo gerado automaticamente para CI" > local.properties
@@ -50,7 +50,7 @@ jobs:
           echo "DONATIONS_DONATE_URL=https://dummy-donations.com/donate" >> local.properties
           echo "AVATAR_PUBLIC_BASE_URL=https://dummy-avatars.com" >> local.properties
           
-          echo "📄 Conteúdo do local.properties (para debug):"
+          echo "📄 Conteúdo do local.properties:"
           cat local.properties
 
       - name: 🔑 Criar keystore fictícia para debug
@@ -58,7 +58,7 @@ jobs:
           keytool -genkey -v -keystore nuviotv.jks -alias nuviotv -keyalg RSA -keysize 2048 -validity 10000 \
             -storepass 815787 -keypass 815787 \
             -dname "CN=Debug, OU=Debug, O=Debug, L=Debug, ST=Debug, C=Debug"
-          echo "✅ Keystore criada com sucesso!"
+          echo "✅ Keystore criada:"
           ls -la nuviotv.jks
 
       - name: 🏗️ Compilar APK Debug
@@ -66,15 +66,49 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleDebug --stacktrace
 
+      - name: 🔍 Investigar local do APK
+        run: |
+          echo "📁 1. Procurando pastas 'outputs':"
+          find . -type d -name "outputs" 2>/dev/null | sort
+          echo ""
+          
+          echo "📁 2. Procurando todos os APKs:"
+          find . -name "*.apk" -type f 2>/dev/null | sort
+          echo ""
+          
+          echo "📁 3. Conteúdo de app/build/ (se existir):"
+          if [ -d "app/build" ]; then
+            ls -la app/build/
+            echo ""
+            echo "📁 4. Conteúdo de app/build/outputs/:"
+            ls -la app/build/outputs/ 2>/dev/null || echo "   (vazio)"
+            echo ""
+            echo "📁 5. Conteúdo de app/build/outputs/apk/:"
+            ls -la app/build/outputs/apk/ 2>/dev/null || echo "   (vazio)"
+            echo ""
+            echo "📁 6. Conteúdo de app/build/outputs/apk/debug/:"
+            ls -la app/build/outputs/apk/debug/ 2>/dev/null || echo "   (vazio)"
+          else
+            echo "   app/build/ não existe"
+          fi
+          echo ""
+          
+          echo "📁 7. Conteúdo de build/ (raiz):"
+          if [ -d "build" ]; then
+            ls -la build/
+          else
+            echo "   build/ não existe"
+          fi
+
       - name: 📤 Upload do APK
         uses: actions/upload-artifact@v4
         with:
           name: nuviotv-debug
           path: |
-            app/build/outputs/apk/debug/app-debug.apk
-            app/build/outputs/apk/debug/app-debug-*.apk
+            **/*.apk
           retention-days: 30
           compression-level: 6
+          if-no-files-found: warn
 
       - name: 📊 Upload de relatórios (se houver falhas)
         if: failure()
