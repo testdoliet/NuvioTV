@@ -29,29 +29,28 @@ jobs:
         with:
           cache-read-only: false
 
-      - name: 📝 Criar local.properties com valores dummy
+      - name: 📝 Criar local.properties com valores dummy (sem aspas extras)
         run: |
           touch local.properties
           echo "# Arquivo gerado automaticamente para CI" > local.properties
-          echo "PARENTAL_GUIDE_API_URL=\"https://dummy-parental-guide.com\"" >> local.properties
-          echo "INTRODB_API_URL=\"https://dummy-introdb.com\"" >> local.properties
-          echo "TRAILER_API_URL=\"https://dummy-trailer.com\"" >> local.properties
-          echo "IMDB_RATINGS_API_BASE_URL=\"https://dummy-imdb-ratings.com\"" >> local.properties
-          echo "IMDB_TAPFRAME_API_BASE_URL=\"https://dummy-imdb-tapframe.com\"" >> local.properties
-          echo "TRAKT_CLIENT_ID=\"dummy_trakt_client_id_123456\"" >> local.properties
-          echo "TRAKT_CLIENT_SECRET=\"dummy_trakt_secret_abcdef\"" >> local.properties
-          echo "TRAKT_API_URL=\"https://api.trakt.tv/\"" >> local.properties
-          echo "TRAKT_REDIRECT_URI=\"urn:ietf:wg:oauth:2.0:oob\"" >> local.properties
-          echo "TMDB_API_KEY=\"dummy_tmdb_key_789012\"" >> local.properties
-          echo "TV_LOGIN_WEB_BASE_URL=\"https://app.nuvio.tv/tv-login\"" >> local.properties
-          echo "SUPABASE_URL=\"https://dummy.supabase.co\"" >> local.properties
-          echo "SUPABASE_ANON_KEY=\"dummy_supabase_anon_key_xyz\"" >> local.properties
-          echo "DONATIONS_BASE_URL=\"https://dummy-donations.com\"" >> local.properties
-          echo "DONATIONS_DONATE_URL=\"https://dummy-donations.com/donate\"" >> local.properties
-          echo "AVATAR_PUBLIC_BASE_URL=\"https://dummy-avatars.com\"" >> local.properties
+          echo "PARENTAL_GUIDE_API_URL=https://dummy-parental-guide.com" >> local.properties
+          echo "INTRODB_API_URL=https://dummy-introdb.com" >> local.properties
+          echo "TRAILER_API_URL=https://dummy-trailer.com" >> local.properties
+          echo "IMDB_RATINGS_API_BASE_URL=https://dummy-imdb-ratings.com" >> local.properties
+          echo "IMDB_TAPFRAME_API_BASE_URL=https://dummy-imdb-tapframe.com" >> local.properties
+          echo "TRAKT_CLIENT_ID=dummy_trakt_client_id_123456" >> local.properties
+          echo "TRAKT_CLIENT_SECRET=dummy_trakt_secret_abcdef" >> local.properties
+          echo "TRAKT_API_URL=https://api.trakt.tv/" >> local.properties
+          echo "TRAKT_REDIRECT_URI=urn:ietf:wg:oauth:2.0:oob" >> local.properties
+          echo "TMDB_API_KEY=dummy_tmdb_key_789012" >> local.properties
+          echo "TV_LOGIN_WEB_BASE_URL=https://app.nuvio.tv/tv-login" >> local.properties
+          echo "SUPABASE_URL=https://dummy.supabase.co" >> local.properties
+          echo "SUPABASE_ANON_KEY=dummy_supabase_anon_key_xyz" >> local.properties
+          echo "DONATIONS_BASE_URL=https://dummy-donations.com" >> local.properties
+          echo "DONATIONS_DONATE_URL=https://dummy-donations.com/donate" >> local.properties
+          echo "AVATAR_PUBLIC_BASE_URL=https://dummy-avatars.com" >> local.properties
           
-          # Mostrar o conteúdo para debug (opcional)
-          echo "📄 Conteúdo do local.properties:"
+          echo "📄 Conteúdo do local.properties (para debug):"
           cat local.properties
 
       - name: 🔑 Criar keystore fictícia para debug
